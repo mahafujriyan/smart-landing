@@ -4,6 +4,6 @@ export default function robots() {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://smart-landing.example/sitemap.xml",
+    sitemap: "https://ordernex.example/sitemap.xml",
   };
 }

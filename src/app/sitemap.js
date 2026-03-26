@@ -1,5 +1,5 @@
 export default function sitemap() {
-  const baseUrl = "https://smart-landing.example";
+  const baseUrl = "https://ordernex.example";
 
   return [
     {

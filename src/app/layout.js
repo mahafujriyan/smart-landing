@@ -13,10 +13,10 @@ const monoFont = IBM_Plex_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://smart-landing.example"),
+  metadataBase: new URL("https://ordernex.example"),
   title: {
-    default: "Smart Product Order Landing System",
-    template: "%s | Smart Landing",
+    default: "OrderNex",
+    template: "%s | OrderNex",
   },
   description:
     "Premium dark product landing page with custom order flow, checkout experience, and admin dashboard.",
@@ -27,14 +27,14 @@ export const metadata = {
     "admin dashboard",
   ],
   openGraph: {
-    title: "Smart Product Order Landing System",
+    title: "OrderNex",
     description:
       "Convert visitors into buyers with a polished product showcase, fast order capture, and a clear checkout path.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Smart Product Order Landing System",
+    title: "OrderNex",
     description:
       "Premium landing page, custom order workflow, checkout, and admin dashboard in one system.",
   },

@@ -27,17 +27,75 @@ function currency(value) {
   }).format(value);
 }
 
+const fallbackVisual = {
+  accent: "#0dffb3",
+  glow: "#0dffb366",
+  label: "ON",
+};
+
+function ProductVisual({ product, priority = false }) {
+  const visual = product?.visual ?? fallbackVisual;
+  const category = product?.category ?? "Product";
+  const imageSrc = product?.image ?? "/ordernext.png";
+  const imagePosition = product?.imagePosition ?? "center";
+
+  return (
+    <div
+      className="relative h-full w-full overflow-hidden"
+      style={{
+        background: `radial-gradient(circle at top, ${visual.glow}, transparent 42%), linear-gradient(180deg, rgba(5,18,12,0.88), rgba(2,10,7,1))`,
+      }}
+    >
+      <Image
+        src={imageSrc}
+        alt={product?.name ?? "Product image"}
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover opacity-80"
+        style={{ objectPosition: imagePosition }}
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.5)_55%,rgba(0,0,0,0.9))]" />
+      <div
+        className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+        style={{ backgroundColor: visual.glow }}
+      />
+      <div
+        className="absolute inset-x-6 top-6 rounded-full border px-3 py-2 text-center text-xs uppercase tracking-[0.35em]"
+        style={{
+          borderColor: `${visual.accent}55`,
+          color: visual.accent,
+          background: "rgba(0, 0, 0, 0.35)",
+          backdropFilter: "blur(10px)",
+        }}
+      >
+        {category}
+      </div>
+      <div
+        className="absolute bottom-5 right-5 flex h-20 w-20 items-center justify-center rounded-[24px] border text-2xl font-semibold"
+        style={{
+          borderColor: `${visual.accent}55`,
+          boxShadow: `0 0 40px ${visual.glow}`,
+          color: visual.accent,
+          background: "rgba(0,0,0,0.42)",
+          backdropFilter: "blur(10px)",
+        }}
+      >
+        {visual.label}
+      </div>
+      {priority ? (
+        <div className="absolute inset-0 border border-white/5" aria-hidden="true" />
+      ) : null}
+    </div>
+  );
+}
+
 function ProductCard({ product, onOrder }) {
   return (
     <article className="glass group relative overflow-hidden rounded-[28px] p-4 transition duration-300 hover:-translate-y-1 hover:border-accent/40">
       <div className="relative aspect-[4/3] overflow-hidden rounded-[22px] border border-white/8 bg-black/20">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover transition duration-500 group-hover:scale-108"
-        />
+        <div className="transition duration-500 group-hover:scale-108">
+          <ProductVisual product={product} />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
       </div>
       <div className="mt-5 space-y-3">
@@ -263,13 +321,7 @@ function OrderModal({ open, products, productId, onClose }) {
 
             <aside className="rounded-[28px] border border-white/10 bg-black/20 p-5">
               <div className="relative aspect-[4/3] overflow-hidden rounded-[24px]">
-                <Image
-                  src={selectedProduct.image}
-                  alt={selectedProduct.name}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 30vw"
-                  className="object-cover"
-                />
+                <ProductVisual product={selectedProduct} />
               </div>
               <p className="mt-5 text-xs uppercase tracking-[0.3em] text-primary">
                 Selected Product
@@ -347,8 +399,14 @@ export default function HomeClient({ products }) {
       <header className="sticky top-0 z-40 border-b border-white/6 bg-background/80 backdrop-blur-xl">
         <div className="shell flex items-center justify-between gap-6 py-4">
           <Link href="/" className="flex items-center gap-3">
-            <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-2 text-xs uppercase tracking-[0.3em] text-primary">
-              Smart Landing
+            <span className="flex items-center justify-center overflow-hidden rounded-2xl">
+              <Image
+                src="/ordernex-logo-1.png"
+                alt="OrderNex logo"
+                width={140}
+                height={120}
+                priority
+              />
             </span>
           </Link>
           <nav className="hidden items-center gap-6 text-sm text-muted md:flex">
@@ -415,13 +473,7 @@ export default function HomeClient({ products }) {
                       index === 0 ? "sm:row-span-2 sm:min-h-[430px]" : "min-h-[200px]"
                     }`}
                   >
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 40vw"
-                      className="object-cover"
-                    />
+                    <ProductVisual product={product} priority />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />
                     <div className="absolute inset-x-0 bottom-0 p-5">
                       <p className="text-xs uppercase tracking-[0.3em] text-primary">
@@ -523,7 +575,7 @@ export default function HomeClient({ products }) {
               Start Custom Order
             </button>
             <div className="mt-6 space-y-3 text-sm text-muted">
-              <p>Support: hello@smartlanding.demo</p>
+              <p>Support: hello@ordernex.demo</p>
               <p>WhatsApp: +1 202 555 0142</p>
               <p>Admin Route: /admin</p>
             </div>
